@@ -56,6 +56,17 @@
             //    width: 100px;
             //    height: 75px;
             //}
+            .delete-picture {
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: #fff;
+                border-radius: 50px;
+                padding: 3px;
+                width: 21px;
+                text-align: center;
+                cursor: pointer;
+            }
         }
         .user-avatar {
             width: 50px;

@@ -168,6 +168,13 @@ export class NewPost extends Component {
         })
     }
 
+    deletePicture = () => {
+        this.setState({
+            imageSrc: undefined,
+            imgValidated: false,
+        })
+    }
+
     render() {
         let width = 280;
         let height = 210;
@@ -199,6 +206,7 @@ export class NewPost extends Component {
                             {this.state.imgValidated && this.state.imageSrc && (
                                 <div className="pictures-validated-container">
                                     <img height={75} width={this.state.ratio ? Math.round(this.state.ratio * 75) : 100} src={this.state.imageSrc} />
+                                    <i className="fa fa-times close material-icons delete-picture" onClick={this.deletePicture}></i>
                                 </div>
                             )}
                             <div className="new-post-more">

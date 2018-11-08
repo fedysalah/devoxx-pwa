@@ -42,6 +42,16 @@
   .new-post-container .new-post-content .pictures-validated-container {
     position: absolute;
     bottom: 95px; }
+    .new-post-container .new-post-content .pictures-validated-container .delete-picture {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: #fff;
+      border-radius: 50px;
+      padding: 3px;
+      width: 21px;
+      text-align: center;
+      cursor: pointer; }
   .new-post-container .new-post-content .user-avatar {
     width: 50px;
     height: 50px;
