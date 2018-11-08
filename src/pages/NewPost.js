@@ -113,6 +113,7 @@ export class NewPost extends Component {
                     imageSrc,
                     openCamera: false,
                     mediaStream: undefined,
+                    ratio,
                 })
             };
 
@@ -132,16 +133,18 @@ export class NewPost extends Component {
     }
 
     addPost = async () => {
-        const { location, text, imageSrc: picture } = this.state;
-        const { latitude, longitude } = location;
-        const newPost = {
-            text,
-            picture,
-            date: moment().unix(),
-            location: { latitude, longitude },
-            authorId: this.context.user.id
+        if (this.state.imageSrc && this.state.text) {
+            const { location, text, imageSrc: picture } = this.state;
+            let locationToSend = location ? { latitude: location.latitude, longitude: location.longitude } : undefined
+            const newPost = {
+                text,
+                picture,
+                date: moment().unix(),
+                location: locationToSend,
+                authorId: this.context.user.id
+            }
+            await post(newPost);
         }
-        await post(newPost);
     }
 
     setCurrentPostion = () => {
@@ -178,7 +181,7 @@ export class NewPost extends Component {
         const takingPicture = this.state.openCamera || (this.state.imageSrc && !this.state.imgValidated)
         return (
             <div className="new-post-container">
-                <BackHeaderWithAction hideAction={takingPicture} actionClass={"add-post"} actionLabel={'Add new post'} doAction={this.addPost} />
+                <BackHeaderWithAction hideAction={takingPicture} actionClass={classSet({"add-post": true, "disabled": !this.state.imageSrc || !this.state.text})} actionLabel={'Add new post'} doAction={this.addPost} />
                 <div className="new-post-content">
                     {!takingPicture && (
                         <Fragment>
@@ -195,7 +198,7 @@ export class NewPost extends Component {
                             </textarea>
                             {this.state.imgValidated && this.state.imageSrc && (
                                 <div className="pictures-validated-container">
-                                    <img src={this.state.imageSrc} />
+                                    <img height={75} width={this.state.ratio ? Math.round(this.state.ratio * 75) : 100} src={this.state.imageSrc} />
                                 </div>
                             )}
                             <div className="new-post-more">
