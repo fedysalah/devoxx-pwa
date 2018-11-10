@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>Devoxx - PWA Showcase</title>
+        <meta http-equiv="Content-Type"content="text/html; charset=utf-8">
+        <link rel="shortcut icon" href="../../assets/images/icons/icon-72x72.png">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <link rel="stylesheet" href="../../assets/css/style.css"/>
+        <style>
+            .container {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <img src="../../assets/images/devoxx_brand.gif" width="183" height="25" class="responsive-img logo-vis" alt="Devoxx Belgium">
+            <h1><a href="../../index.html">PWA Showcase</a></h1>
+            <span class="twitter-account">@gsoldera / @fedysalah</span>
+        </nav>
+        <div class="content">
+            <h2>Offline - indexedDB</h2>
+            <div id="container">
+            </div>
+            <div>
+                First Name : <input type="text" id="input-text" />
+            </div>
+            <div>
+                Last Name : <input type="text" id="input-text" />
+            </div>
+            <button class="btn" onclick="save">Submit</button>
+        </div>
+        <script>
+            
+            window.addEventListener('load', function() {
+                if (!('indexedDB' in window)) {
+                    container.innerHTML = 'This browser doesn\'t support IndexedDB';
+                    return;
+                } else{
+
+                }
+            })
+        </script>
+        <script>
+            function save() {
+                var timeBadge = new Date().toTimeString().split(' ')[0];
+                var newStateInfo = document.createElement('p');
+                newStateInfo.innerHTML = '<span class="badge">' + timeBadge + '</span> State of <b>' + permissionName + '</b> permission status changed to <b>' + newState + '</b>.';
+                document.getElementById('log').appendChild(newStateInfo);
+            }
+            function requestGeolocation() {
+                navigator.geolocation.getCurrentPosition(function(){});
+            }
+            function checkPermission(permissionName, descriptor) {
+                try {
+                    navigator.permissions.query(Object.assign({name: permissionName}, descriptor))
+                    .then(function (permission) {
+                        document.getElementById(permissionName + '-status').innerHTML = permission.state;
+                        permission.addEventListener('change', function (e) {
+                            document.getElementById(permissionName + '-status').innerHTML = permission.state;
+                            handleChange(permissionName, permission.state);
+                        });
+                    });
+                } catch (e) {
+                }
+            }
+
+            if (navigator.permissions) {
+                checkPermission('geolocation');
+            } else {
+                document.getElementById('status').innerHTML = 'Permissions API not available';
+            }
+        </script>
+    </body>
+</html>
