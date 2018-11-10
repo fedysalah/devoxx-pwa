@@ -128,7 +128,7 @@ app.post('/api/syncfavorites', async (req, res) => {
         const postAuthor = await authorById(post.authorId);
         if (postAuthor.subscription) {
             const payload = JSON.stringify({
-                title: 'Your post has been favotited',
+                title: 'Your post has been favorited',
                 body: `${author.fullName} has favorited your post`,
                 icon: '/images/favicon.png',
                 postId,
@@ -205,7 +205,7 @@ app.post('/api/notify', async (req, res) => {
     const author = await authorById(authorId);
 
     const payload = JSON.stringify({
-        title: 'Your post has been favotited',
+        title: 'Your post has been favorited',
         body: `${author.fullName} has favorited your post`,
         icon: '/images/favicon.png',
         postId,

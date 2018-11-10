@@ -88,11 +88,14 @@ self.addEventListener('fetch', function (event) {
               const matchingClone = matching.clone();
               fetch(event.request).then(function (response) {
                 //file to use the next time we show view
-                cache.put(event.request, response.clone());
+                // TODO check status response
+                if (response.ok) {
+                  cache.put(event.request, response.clone());
+                }
                 return response;
               })
                 .then(value => {
-                  if (event.request.url.endsWith('/api/posts')) {
+                  if (value.ok && event.request.url.endsWith('/api/posts')) {
                     value.json()
                       .then(valueAsJson => {
                         matchingClone.json()
@@ -113,7 +116,9 @@ self.addEventListener('fetch', function (event) {
             } else {
               return fetch(event.request).then(function (response) {
                 //file to use the next time we show view
-                cache.put(event.request, response.clone());
+                if (response.ok) {
+                  cache.put(event.request, response.clone());
+                }
                 return response;
               })
             }

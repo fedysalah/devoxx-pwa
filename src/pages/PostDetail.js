@@ -7,8 +7,10 @@ import { PostComment } from '../components/PostComment';
 import { postDetails } from '../services/posts';
 import { authorById } from '../services/authors';
 import { favorites, votes, localComments } from '../stores/indexedDb';
+import { Swiper } from '../components/Swiper';
+import { withRouter } from "react-router-dom";
 
-export class PostDetail extends Component {
+class _PostDetail extends Component {
     state = {
         postDetail: undefined,
         unsyncedComments: []
@@ -116,6 +118,14 @@ export class PostDetail extends Component {
         }
     }
 
+    goBack = () => {
+        if (this.props.history.length > 1) {
+            this.props.history.goBack();
+        } else {
+            this.props.history.replace("/")
+        }
+    }
+
     render() {
         const { postDetail, unsyncedComments } = this.state
         if (!postDetail) {
@@ -126,11 +136,15 @@ export class PostDetail extends Component {
         return (
             <div className="post-detail">
                 <BackHeader title={"Post detail"} />
-                {postDetail.post && <Post post={postDetail.post} />}
-                <ul className="post-comments">
-                    {allComments.map((comment, i) => <li key={`post-${i}`}><PostComment comment={comment} /></li>)}
-                </ul>
+                <Swiper toLeft={this.goBack}>
+                    {postDetail.post && <Post post={postDetail.post} />}
+                    <ul className="post-comments">
+                        {allComments.map((comment, i) => <li key={`post-${i}`}><PostComment comment={comment} /></li>)}
+                    </ul>
+                </Swiper>
             </div>
         );
     }
 }
+
+export const PostDetail = withRouter(_PostDetail)
