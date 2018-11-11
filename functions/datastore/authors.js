@@ -1,4 +1,4 @@
-const db = require('./firestore');
+const {db} = require('./storages');
 
 const addAuthor = async (email, password) => {
     const newAuthor = await db.collection('authors').add({

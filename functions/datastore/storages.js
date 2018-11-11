@@ -5,4 +5,9 @@ const db = admin.firestore();
 const settings = {timestampsInSnapshots: true};
 db.settings(settings);
 
-module.exports = db;
+const storage = admin.storage();
+const bucket = storage.bucket();
+
+module.exports = {db, bucket};
+
+

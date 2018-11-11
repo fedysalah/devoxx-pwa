@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const webpush = require("web-push");
@@ -29,6 +28,10 @@ const {
     allComments
 } = require('./datastore/comments');
 
+const {
+    uploadImage
+} = require('./datastore/pictures');
+
 const app = express();
 const publicVapidKey = "BFwbGBPX9ggNKmMPMtn8a_eYfMaU28iGv8-fy8PwxoMPwZZQQKaq96RMTCBkdUvVDjgJPZ6wtBeZ2p2i09ZMihY";
 const privateVapidKey = "-UfSss_RgRG9keikyYIjZYx1UTbUIdAf9yWPwqt_jTM";
@@ -39,13 +42,17 @@ webpush.setVapidDetails(
 );
 
 app.use(compression());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 app.use(expressValidator());
 
-
 app.post('/api/subscribe', async (req, res) => {
-    const { subscription, id } = req.body;
+    const {
+        subscription,
+        id
+    } = req.body;
     console.log(`/api/subscribe/`, subscription)
     await updateAuthorSubscription(id, subscription);
     res.json({});
@@ -77,12 +84,16 @@ app.post('/api/syncposts', async (req, res) => {
             const locationResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${post.location.latitude},${post.location.longitude}&key=AIzaSyCYcxCXRuOQT1eX_yjAMD4IqXSZYVLslDQ`)
             const locationJs = await locationResponse.json();
             console.log(locationJs);
-            location = locationJs.results
-                && locationJs.results.length > 0 && locationJs.results[0].formatted_address || location;
+            location = locationJs.results &&
+                locationJs.results.length > 0 && locationJs.results[0].formatted_address || location;
         } catch (error) {
             console.log(error)
         }
-        return addPost({ ...post, location });
+        const picture = await uploadImage(post.picture);
+        return addPost({ ...post,
+            picture,
+            location
+        });
     }))
     const posts = await allPosts();
     return res.json(posts)
@@ -104,6 +115,7 @@ app.post('/api/synccomments', async (req, res) => {
                 icon: '/images/favicon.png',
                 postId,
                 authorId,
+                target: post.authorId,
                 action: 'comment',
                 date: moment().unix(),
             });
@@ -133,6 +145,7 @@ app.post('/api/syncfavorites', async (req, res) => {
                 icon: '/images/favicon.png',
                 postId,
                 authorId,
+                target: post.authorId,
                 action: 'favorite',
                 date: moment().unix(),
             });
@@ -169,6 +182,7 @@ app.post('/api/syncvotes', async (req, res) => {
                 body: `${author.fullName} has ${value > 0 ? 'voted up' : 'voted down'} your post`,
                 icon: '/images/favicon.png',
                 postId,
+                target: post.authorId,
                 authorId,
                 action: value > 0 ? 'voteUp' : 'voteDown',
                 date: moment().unix(),
@@ -220,7 +234,11 @@ app.post('/api/notify', async (req, res) => {
 });
 
 app.post('/api/profile', async (req, res) => {
-    const {authorId, fullName, bio, picture} = req.body;
+    const { authorId, fullName, bio } = req.body;
+    let picture = req.body.picture;
+    if (picture) {
+        picture = await uploadImage(picture);
+    }
     const updated = await updateAuthor(authorId, fullName, bio, picture)
     res.json(updated);
 })
@@ -256,7 +274,9 @@ app.get('/api/mocks', async (req, res) => {
         date: moment("2018 11 02", "YYYY MM DD").unix(),
         text: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo',
     })
-    res.json({ sate: 'ok' });
+    res.json({
+        sate: 'ok'
+    });
 });
 
 module.exports = app;

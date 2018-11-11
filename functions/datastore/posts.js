@@ -1,4 +1,4 @@
-const db = require('./firestore');
+const {db} = require('./storages');
 
 const addPost = async (post) => {
     const newPost = await db.collection('posts').add({
