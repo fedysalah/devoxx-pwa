@@ -80,7 +80,7 @@ class App extends Component {
     const user = await login(email, password);
     // fix setSetae in unmounted component
     if (window.PushManager) {
-      this.registerForNotifications(user);
+      //this.registerForNotifications(user);
     }
     this.setState({
       user
@@ -93,7 +93,7 @@ class App extends Component {
   signupUser = async (email, password) => {
     const user = await signup(email, password);
     if (window.PushManager) {
-      this.registerForNotifications(user);
+      //this.registerForNotifications(user);
     }
     console.log('user added', user);
     this.setState({

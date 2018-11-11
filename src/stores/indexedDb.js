@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
 
-const db = new Dexie("AirBeerNbeer");
+const db = new Dexie("AirBeerNbeerDemo");
 
 db.version(1).stores({
     favorites: "postId, authorId, unsynced",
@@ -19,7 +19,7 @@ export const favorite = (postId, authorId) => {
             if (count == 0) {
                 return db.favorites.add({ postId, authorId, unsynced: 'true' })
                     .then(() => {
-                        requestSync('favorites_updated')
+                        //requestSync('favorites_updated')
                         return db.favorites.toArray();
                     })
             } else {
@@ -40,7 +40,7 @@ export const vote = (postId, authorId, value) => {
             if (count == 0) {
                 return db.votes.add({ postId, authorId, value, unsynced: 'true' })
                     .then(() => {
-                        requestSync('votes_updated')
+                        //requestSync('votes_updated')
                         return db.votes.toArray();
                     })
             } else {
@@ -56,7 +56,7 @@ export const comment = (comment) => {
     console.log('commenting post  : ', comment);
     return db.comments.add({ ...comment, unsynced: true })
         .then(() => {
-            requestSync('comments_updated')
+            //requestSync('comments_updated')
             return db.comments.toArray();
         })
 };
@@ -65,7 +65,7 @@ export const post = (post) => {
     console.log('addind a new post  : ', post);
     return db.posts.add({ ...post, unsynced: true })
         .then(() => {
-            requestSync('posts_updated')
+            //requestSync('posts_updated')
             return db.posts.toArray();
         })
 };
