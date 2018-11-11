@@ -1,5 +1,6 @@
 'use strict';
 self.addEventListener('install', function(event) {
+    console.log('install')
     event.waitUntil(
       caches.open('devoxx-pwa-cache-only-assets').then(function(cache) {
         console.log('caching assets');
@@ -14,11 +15,14 @@ self.addEventListener('install', function(event) {
   });
 
   self.addEventListener('activate', function(event) {
+    console.log('activate')
     event.waitUntil(
       caches.keys().then(function(cacheNames) {
+        console.log('cacheNames', cacheNames)
         return Promise.all(
           cacheNames.filter(function(cacheName) {
           }).map(function(cacheName) {
+            console.log('delete cache', cacheName)
             return caches.delete(cacheName);
           })
         );

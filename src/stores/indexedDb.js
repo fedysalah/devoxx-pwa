@@ -7,7 +7,7 @@ db.version(1).stores({
     posts: "++postId, authorId, date, location, text, picture, unsynced",
     comments: "++commentId, postId, authorId, date, text, unsynced",
     votes: "postId, authorId, value, unsynced",
-    notifications: "++id, postId, authorId, action, date, seen"
+    notifications: "++id, postId, authorId, target, action, date, seen"
 });
 
 export const favorite = (postId, authorId) => {
@@ -94,21 +94,20 @@ export const favorites = (authorId) => {
         .toArray()
 };
 
-export const notifications = (authorId) => {
-    return db.notifications.where('authorId')
-        .equals(authorId)
+export const notifications = (target) => {
+    return db.notifications.where('target')
+        .equals(target)
         .toArray()
 };
 
-export const unseenNotifications = (authorId) => {
+export const unseenNotifications = (target) => {
     return db.notifications
-        .where({ 'authorId': authorId, 'seen': 'false' })
+        .where({ 'target': target, 'seen': 'false' })
         .toArray()
 };
 
-export const markAllNotifactionAsSeen = () => {
-    return db.notifications.where('seen')
-        .equals('false')
+export const markAllNotifactionAsSeen = (target) => {
+    return db.notifications.where({ 'target': target, 'seen': 'false' })
         .modify({ seen: 'true' })
 };
 

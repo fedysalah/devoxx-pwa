@@ -148,8 +148,20 @@ self.addEventListener('notificationclick', function (event) {
   event.waitUntil(
     clients.matchAll({
       type: "window"
-    }).then(function () {
-      if (clients.openWindow) {
+    })
+    .then((windowClients) => {
+      let matchingClient = null;
+      for (let i = 0; i < windowClients.length; i++) {
+        const windowClient = windowClients[i];
+        if (windowClient.url.startsWith("https://airbeerandbeer.firebaseapp.com/")) {
+          matchingClient = windowClient;
+          break;
+        }
+      }
+      console.log('lookup clients')
+      if (matchingClient) {
+        return matchingClient.navigate(`https://airbeerandbeer.firebaseapp.com/notifications`);
+      } else {
         return clients.openWindow(`https://airbeerandbeer.firebaseapp.com/notifications`);
       }
     })
@@ -162,6 +174,7 @@ self.addEventListener("push", e => {
   db.notifications.add({
     postId: data.postId,
     authorId: data.authorId,
+    target:data.target,
     action: data.action,
     date: data.date,
     seen: 'false',
@@ -188,7 +201,7 @@ db.version(1).stores({
   posts: "++postId, authorId, date, location, text, picture, unsynced",
   comments: "++commentId, postId, authorId, date, text, unsynced",
   votes: "postId, authorId, value, unsynced",
-  notifications: "++id, postId, authorId, action, date ,seen"
+  notifications: "++id, postId, authorId, target, action, date ,seen"
 });
 
 self.addEventListener('message', function (event) {
