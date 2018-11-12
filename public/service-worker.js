@@ -177,7 +177,7 @@ self.addEventListener("push", e => {
   db.notifications.add({
     postId: data.postId,
     authorId: data.authorId,
-    target:data.target,
+    target: data.target,
     action: data.action,
     date: data.date,
     seen: 'false',

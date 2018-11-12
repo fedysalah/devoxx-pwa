@@ -115,7 +115,7 @@ app.post('/api/synccomments', async (req, res) => {
                 icon: '/images/favicon.png',
                 postId,
                 authorId,
-                target: post.authorId,
+                target: postAuthor.authorId,
                 action: 'comment',
                 date: moment().unix(),
             });
@@ -145,7 +145,7 @@ app.post('/api/syncfavorites', async (req, res) => {
                 icon: '/images/favicon.png',
                 postId,
                 authorId,
-                target: post.authorId,
+                target: postAuthor.authorId,
                 action: 'favorite',
                 date: moment().unix(),
             });
@@ -182,7 +182,7 @@ app.post('/api/syncvotes', async (req, res) => {
                 body: `${author.fullName} has ${value > 0 ? 'voted up' : 'voted down'} your post`,
                 icon: '/images/favicon.png',
                 postId,
-                target: post.authorId,
+                target: postAuthor.authorId,
                 authorId,
                 action: value > 0 ? 'voteUp' : 'voteDown',
                 date: moment().unix(),
