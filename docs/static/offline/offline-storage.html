@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <title>Devoxx - PWA Showcase</title>
+        <meta http-equiv="Content-Type"content="text/html; charset=utf-8">
+        <link rel="shortcut icon" href="../../assets/images/icons/icon-72x72.png">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <link rel="stylesheet" href="../../assets/css/style.css"/>
+        <style>
+            .container {
+                width: 100%;
+            }
+            td {
+                padding: 5px;
+            }
+            tr {
+                border-bottom: 1px solid;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <img src="../../assets/images/devoxx_brand.gif" width="183" height="25" class="responsive-img logo-vis" alt="Devoxx Belgium">
+            <h1><a href="../../index.html">PWA Showcase</a></h1>
+            <span class="twitter-account">@gsoldera / @fedysalah</span>
+        </nav>
+        <div class="content">
+            <h2>Offline - Offline storage</h2>
+            <div id="container">
+                <ul>
+                    <table>
+                        <tr>
+                            <td>Session storage</td>
+                            <td id="session-storage"></td>
+                        </tr>
+                        <tr>
+                            <td>Local storage</td>
+                            <td id="local-storage"></td>
+                        </tr>
+                        <tr>
+                            <td>IndexedDB</td>
+                            <td id="indexeddb"></td>
+                        </tr>
+                        <tr>
+                            <td>Caches</td>
+                            <td id="caches"></td>
+                        </tr>
+                        <tr>
+                            <td>Storage</td>
+                            <td id="navigator-storage"></td>
+                        </tr>
+                        </table>
+                </ul>
+            </div>
+        </div>
+        <script>
+            
+            window.addEventListener('load', function() {
+                document.getElementById('session-storage').innerHTML = window.sessionStorage ? 'Supported' : 'Not available';
+                document.getElementById('local-storage').innerHTML = window.localStorage ? 'Supported' : 'Not available';
+                document.getElementById('indexeddb').innerHTML = window.indexedDB ? 'Supported' : 'Not available';
+                document.getElementById('caches').innerHTML = window.caches ? 'Supported' : 'Not available';
+                document.getElementById('navigator-storage').innerHTML = navigator.storage ? 'Supported' : 'Not available';
+            })
+        </script>
+    </body>
+</html>

@@ -96,3 +96,8 @@
       .post .post-actions-container .post-actions .disabled {
         opacity: 0.3;
         pointer-events: none; }
+  .post img {
+    opacity: 1;
+    transition: opacity 0.3s; }
+  .post img[data-src] {
+    opacity: 0; }
