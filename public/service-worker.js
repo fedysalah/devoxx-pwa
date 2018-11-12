@@ -160,9 +160,12 @@ self.addEventListener('notificationclick', function (event) {
       }
       console.log('lookup clients')
       if (matchingClient) {
-        return matchingClient.navigate(`https://airbeerandbeer.firebaseapp.com/notifications`);
+        return matchingClient.navigate(`https://airbeerandbeer.firebaseapp.com/notifications`)
+        .then(_matchingClient=> _matchingClient.focus());
       } else {
-        return clients.openWindow(`https://airbeerandbeer.firebaseapp.com/notifications`);
+        if (clients.openWindow) {
+           return clients.openWindow(`https://airbeerandbeer.firebaseapp.com/notifications`);
+        }
       }
     })
   );
