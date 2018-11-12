@@ -67,6 +67,10 @@ export class Post extends Component {
         }
     }
 
+    displayPicture = () => {
+        document.getElementById(`img-${this.props.post.postId}`).removeAttribute('data-src');
+    }
+
     render() {
         const { post } = this.props;
         let text = (
@@ -96,7 +100,7 @@ export class Post extends Component {
                 {text}
             </div>
             <div className="post-picture-container">
-                <img src={post.picture} className="post-picture" />
+                <img id={`img-${post.postId}`} src={post.picture} data-src={post.picture} className="post-picture" onLoad={this.displayPicture} />
             </div>
             <div className="post-actions-container">
                 <div className="post-votes">
